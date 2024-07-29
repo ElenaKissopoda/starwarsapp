@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="card-body" *ngIf="!(loading$ | async)">
+        <ng-container *ngIf="personDetails$ | async as c">
+            <h1 style="margin: 0;">{{c.name}}</h1>
+            <div>{{c.description}}</div>
+            <div>
+                <h2>Basic Details</h2>
+                <div class="details-row">
+                    <span>Gender</span>
+                    <span>{{c.gender}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Birth Year</span>
+                    <span>{{c.birth_year}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Homeworld</span>
+                    <a class="link" routerLink="/planets/{{c.homeworldId}}">{{c.homeworldName}}</a>
+                </div>
+            </div>
+            <div>
+                <h2>Physical Details</h2>
+                <div class="details-row">
+                    <span>Height</span>
+                    <span>{{c.height}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Mass</span>
+                    <span>{{c.mass}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Hair Color</span>
+                    <span>{{c.hair_color}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Skin Color</span>
+                    <span>{{c.skin_color}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Eye Color</span>
+                    <span>{{c.eye_color}}</span>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="load-container" *ngIf="loading$ | async">
+        <app-loading-indicator></app-loading-indicator>
+    </div>
+</div>

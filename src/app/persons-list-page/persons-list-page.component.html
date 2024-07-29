@@ -1,0 +1,13 @@
+<ng-container *ngIf="data$ | async as data">
+    <div class="card">
+        <div class="card-body text-center clickable button" (click)="goTo(r)" *ngFor="let r of data">
+            <h2>{{ r.name }}</h2>
+        </div>
+    </div>
+    <div class="load-container">
+        <div *ngIf="!(loading$ | async) && hasMoreData" class="text-center clickable link" (click)="filter()">
+            Load more
+        </div>
+        <app-loading-indicator *ngIf="loading$ | async"></app-loading-indicator>
+    </div>
+</ng-container>

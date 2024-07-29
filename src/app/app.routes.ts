@@ -16,6 +16,15 @@ export const routes: Routes = [
         ]
     },
     {
+        path: 'planets',
+        children: [
+            {
+                path: ':id',
+                loadComponent: () => import('./planet-details-page/planet-details-page.component').then(m => m.PlanetDetailsPageComponent)
+            }
+        ]
+    },
+    {
         path: '', redirectTo: '/persons', pathMatch: 'full'
     }
 ];

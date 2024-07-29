@@ -1,0 +1,59 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+    background-color: black;
+    color: white;
+}
+
+.link {
+    color: #eedb00;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 0;
+    list-style-type: none;
+    padding: 0;
+    justify-content: space-between;
+}
+
+.card-body {
+    width: 25%;
+    border: 1px solid #ccc;
+    padding: 15px  35px;
+    border-radius: 4px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.details-row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    padding-bottom: 10px;
+}
+
+.button:hover {
+    background-color: white;
+    color: black;
+}
+
+.load-container{
+    margin: 35px 0;
+}

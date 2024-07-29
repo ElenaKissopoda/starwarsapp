@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="card-body" style="color: white;" *ngIf="!(loading$ | async)">
+        <ng-container *ngIf="planetDetails$ | async as p">
+            <h1 style="margin: 0;">{{p.name}}</h1>
+            <div>{{p.description}}</div>
+            <div>
+                <h2>Homeworld Details</h2>
+                <div class="details-row">
+                    <span>Diameter</span>
+                    <span>{{p.diameter}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Rotation Period</span>
+                    <span>{{p.rotation_period}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Orbital Period</span>
+                    <span>{{p.orbital_period}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Gravity</span>
+                    <span>{{p.gravity}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Population</span>
+                    <span>{{p.population}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Climate</span>
+                    <span>{{p.climate}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Terrain</span>
+                    <span>{{p.terrain}}</span>
+                </div>
+                <div class="details-row">
+                    <span>Surface Water</span>
+                    <span>{{p.surface_water}}</span>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="load-container" *ngIf="loading$ | async">
+        <app-loading-indicator></app-loading-indicator>
+    </div>
+</div>
