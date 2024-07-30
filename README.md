@@ -5,7 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Clone
 
 ```
-$ git clone https://github.com/ElenaKisssopoda/starwarsapp
+$ git clone https://github.com/ElenaKissopoda/starwarsapp
 $ cd starwarsapp
 ```
 
