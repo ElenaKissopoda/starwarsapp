@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { BehaviorSubject, filter, finalize, map, of, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, map, of, Subscription, switchMap } from 'rxjs';
 import { ApiService } from '../services/api.service';
-import { PersonDetailApiModel } from '../services/models/api.models';
 import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
 import { StateService } from '../services/state.service';
+import { PersonDetailApiModel } from '../services/models/api.models';
 
 @Component({
   selector: 'app-person-details-page',
@@ -16,17 +16,17 @@ import { StateService } from '../services/state.service';
 })
 export class PersonDetailsPageComponent implements OnInit, OnDestroy {
 
+  private selectedPersonSub = new BehaviorSubject<PersonDetailApiModel>(null);
+  selectedPerson$ = this.selectedPersonSub.asObservable();
+
   private loadingSub = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSub.asObservable();
 
   private subs = new Subscription();
 
-  get personDetails$() {
-    return this.stateSrvc.personDetails$;
-  }
-
   constructor(
     private route: ActivatedRoute,
+    private location: Location,
     private srvc: ApiService,
     private stateSrvc: StateService
   ) { }
@@ -37,7 +37,10 @@ export class PersonDetailsPageComponent implements OnInit, OnDestroy {
       filter(params => !!params),
       switchMap(params => {
         let personId = params.get('id') as unknown as number;
-        if (personId == this.stateSrvc.person?.id) return of(this.stateSrvc.person);
+
+        if (this.stateSrvc.personsDetails.find(x => personId == x.id))
+          return of(this.stateSrvc.personsDetails.find(x => personId == x.id) as PersonDetailApiModel);
+
         return this.srvc.getPersonDetails(personId).pipe(
           map(res => {
             return {
@@ -56,30 +59,29 @@ export class PersonDetailsPageComponent implements OnInit, OnDestroy {
           })
         );
       })
-    ).subscribe((res) => { 
+    ).subscribe((res) => {
       this.loadingSub.next(false);
-      this.stateSrvc.person = res});
+      this.selectedPersonSub.next(res);
+    });
     this.subs.add(sub);
 
-    sub = this.stateSrvc.personDetails$.pipe(
-      filter(details => !!details),
-      switchMap(details => {
-        if (details.homeworldId) return of(null);
-        return this.srvc.getPlanetDetails(details.homeworldUrl);
-      })
+    sub = this.selectedPerson$.pipe(
+      filter(details => !!details && !details.homeworldId),
+      switchMap(details => this.srvc.getPlanetDetails(details.homeworldUrl))
     ).subscribe(planet => {
       if (!planet) return;
 
-      let _details = { ...this.stateSrvc.person };
-      _details.homeworldName = planet.result.properties.name;
-      _details.homeworldId = planet.result.uid;
-      this.stateSrvc.person = _details;
+      let selectedPerson = { ...this.selectedPersonSub.value };
+      selectedPerson.homeworldName = planet.result.properties.name;
+      selectedPerson.homeworldId = planet.result.uid;
+      this.selectedPersonSub.next(selectedPerson);
+      this.stateSrvc.person = selectedPerson;
     });
     this.subs.add(sub);
   }
 
-  getPlanetLink(homeworldId: number) {
-    return `/planets/${homeworldId}`;
+  goBack() {
+    this.location.back();
   }
 
   ngOnDestroy(): void {

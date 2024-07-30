@@ -2,6 +2,7 @@
 body {
     background-color: black;
     color: white;
+    margin: 20px;
 }
 
 .link {
@@ -24,14 +25,14 @@ body {
 .card {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px 0;
+    gap: 20px 0px;
     list-style-type: none;
     padding: 0;
     justify-content: space-between;
 }
 
 .card-body {
-    width: 25%;
+    box-sizing: border-box;
     border: 1px solid #ccc;
     padding: 15px  35px;
     border-radius: 4px;
@@ -56,4 +57,14 @@ body {
 
 .load-container{
     margin: 35px 0;
+}
+
+.d-flex {
+    display: flex;
+}
+
+button {
+    background-color: black;
+    color: white;
+    border-style: none;
 }

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, filter, finalize, map, of, Subscription, switchMap } from 'rxjs';
 import { ApiService } from '../services/api.service';
 import { PlanetDetailApiModel } from '../services/models/api.models';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
 import { StateService } from '../services/state.service';
 
@@ -16,17 +16,16 @@ import { StateService } from '../services/state.service';
 })
 export class PlanetDetailsPageComponent implements OnInit, OnDestroy {
 
+  selectedPlanet!: PlanetDetailApiModel;
+
   private loadingSub = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSub.asObservable();
 
   private subs = new Subscription();
 
-  get planetDetails$(){
-    return this.stateSrvc.planetDetails$;
-  }
-
   constructor(
     private route: ActivatedRoute,
+    private location: Location,
     private srvc: ApiService,
     private stateSrvc: StateService
   ) { }
@@ -37,10 +36,13 @@ export class PlanetDetailsPageComponent implements OnInit, OnDestroy {
       filter(params => !!params),
       switchMap(params => {
         let planetId = params.get('id') as unknown as number;
-        if (planetId == this.stateSrvc.planet?.id) return of(this.stateSrvc.planet);
+
+        if (this.stateSrvc.planetsDetails.find(x => planetId == x.id)) 
+          return of(this.stateSrvc.planetsDetails.find(x => planetId == x.id) as PlanetDetailApiModel);
+
         return this.srvc.getPlanetDetailsById(planetId).pipe(
           map(planet => {
-            return {
+            let _p: PlanetDetailApiModel = {
               id: planet.result.uid,
               diameter: planet.result.properties.diameter,
               rotation_period: planet.result.properties.rotation_period,
@@ -53,14 +55,20 @@ export class PlanetDetailsPageComponent implements OnInit, OnDestroy {
               name: planet.result.properties.name,
               description: planet.result.description
             };
+            return _p;
           })
         );
       })
-    ).subscribe((planet) => {
+    ).subscribe((planet: PlanetDetailApiModel) => {
       this.loadingSub.next(false);
       this.stateSrvc.planet = planet;
+      this.selectedPlanet = planet;
     });
     this.subs.add(sub);
+  }
+
+  goBack(){
+    this.location.back();
   }
 
   ngOnDestroy(): void {

@@ -1,41 +1,42 @@
+<button class="clickable" (click)="goBack()">< Back</button>
 <div class="container">
     <div class="card-body" style="color: white;" *ngIf="!(loading$ | async)">
-        <ng-container *ngIf="planetDetails$ | async as p">
-            <h1 style="margin: 0;">{{p.name}}</h1>
-            <div>{{p.description}}</div>
+        <ng-container *ngIf="selectedPlanet">
+            <h1 style="margin: 0;">{{selectedPlanet.name}}</h1>
+            <div>{{selectedPlanet.description}}</div>
             <div>
-                <h2>Homeworld Details</h2>
+                <h3>Homeworld Details</h3>
                 <div class="details-row">
                     <span>Diameter</span>
-                    <span>{{p.diameter}}</span>
+                    <span>{{selectedPlanet.diameter}}</span>
                 </div>
                 <div class="details-row">
                     <span>Rotation Period</span>
-                    <span>{{p.rotation_period}}</span>
+                    <span>{{selectedPlanet.rotation_period}}</span>
                 </div>
                 <div class="details-row">
                     <span>Orbital Period</span>
-                    <span>{{p.orbital_period}}</span>
+                    <span>{{selectedPlanet.orbital_period}}</span>
                 </div>
                 <div class="details-row">
                     <span>Gravity</span>
-                    <span>{{p.gravity}}</span>
+                    <span>{{selectedPlanet.gravity}}</span>
                 </div>
                 <div class="details-row">
                     <span>Population</span>
-                    <span>{{p.population}}</span>
+                    <span>{{selectedPlanet.population}}</span>
                 </div>
                 <div class="details-row">
                     <span>Climate</span>
-                    <span>{{p.climate}}</span>
+                    <span>{{selectedPlanet.climate}}</span>
                 </div>
                 <div class="details-row">
                     <span>Terrain</span>
-                    <span>{{p.terrain}}</span>
+                    <span>{{selectedPlanet.terrain}}</span>
                 </div>
                 <div class="details-row">
                     <span>Surface Water</span>
-                    <span>{{p.surface_water}}</span>
+                    <span>{{selectedPlanet.surface_water}}</span>
                 </div>
             </div>
         </ng-container>

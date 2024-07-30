@@ -6,32 +6,27 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class StateService {
-  persons: any[] = [];
+  personsList: any[] = [];
   nextUrl: string | null = null;
 
-  private personDetailsSub = new BehaviorSubject<any>(null);
-  personDetails$ = this.personDetailsSub.asObservable();
-
-  private planetDetailsSub = new BehaviorSubject<any>(null);
-  planetDetails$ = this.planetDetailsSub.asObservable();
+  personsDetails: PersonDetailApiModel[] = [];
+  planetsDetails: PlanetDetailApiModel[] = [];
 
   set person(p: PersonDetailApiModel) {
-    this.personDetailsSub.next(p);
-  }
+    if (this.personsDetails.find(x => x.id == p.id)) return;
 
-  get person() {
-    return this.personDetailsSub.value;
+    let persons = [...this.personsDetails];
+    persons.push(p);
+    this.personsDetails = persons;
   }
 
   set planet(p: PlanetDetailApiModel) {
-    this.planetDetailsSub.next(p);
-  }
+    if (this.planetsDetails.find(x => x.id == p.id)) return;
 
-  get planet() {
-    return this.planetDetailsSub.value;
+    let planets = [...this.planetsDetails];
+    planets.push(p);
+    this.planetsDetails = planets;
   }
 
   constructor() { }
-
-
 }

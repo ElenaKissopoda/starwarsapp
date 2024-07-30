@@ -1,0 +1,14 @@
+.card-body {
+    width: 350px;
+    max-width: 100%;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 400px) {
+    .card-body {
+        padding: 15px;
+    }
+}

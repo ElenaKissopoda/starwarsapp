@@ -34,10 +34,10 @@ export class PersonsListPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    if (this.stateSrvc.persons.length == 0)
+    if (this.stateSrvc.personsList.length == 0)
       this.filter();
     else
-      this.dataSub.next(this.stateSrvc.persons);
+      this.dataSub.next(this.stateSrvc.personsList);
   }
 
   goTo(r: any) {
@@ -51,7 +51,7 @@ export class PersonsListPageComponent implements OnInit, OnDestroy {
     ).subscribe(resp => {
       let _data = [...this.dataSub.value, ...resp.results];
       this.dataSub.next(_data);
-      this.stateSrvc.persons = _data;
+      this.stateSrvc.personsList = _data;
       this.stateSrvc.nextUrl = resp.next;
     });
     this.subs.add(sub);

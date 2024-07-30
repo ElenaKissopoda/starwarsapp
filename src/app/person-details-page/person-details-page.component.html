@@ -1,44 +1,45 @@
+<button class="clickable" (click)="goBack()">< Back</button>
 <div class="container">
     <div class="card-body" *ngIf="!(loading$ | async)">
-        <ng-container *ngIf="personDetails$ | async as c">
-            <h1 style="margin: 0;">{{c.name}}</h1>
-            <div>{{c.description}}</div>
+        <ng-container *ngIf="selectedPerson$ | async as selectedPerson">
+            <h1 style="margin: 0;">{{selectedPerson.name}}</h1>
+            <div>{{selectedPerson.description}}</div>
             <div>
-                <h2>Basic Details</h2>
+                <h3>Basic Details</h3>
                 <div class="details-row">
                     <span>Gender</span>
-                    <span>{{c.gender}}</span>
+                    <span>{{selectedPerson.gender}}</span>
                 </div>
                 <div class="details-row">
                     <span>Birth Year</span>
-                    <span>{{c.birth_year}}</span>
+                    <span>{{selectedPerson.birth_year}}</span>
                 </div>
                 <div class="details-row">
                     <span>Homeworld</span>
-                    <a class="link" routerLink="/planets/{{c.homeworldId}}">{{c.homeworldName}}</a>
+                    <a class="link" routerLink="/planets/{{selectedPerson.homeworldId}}">{{selectedPerson.homeworldName}}</a>
                 </div>
             </div>
             <div>
-                <h2>Physical Details</h2>
+                <h3>Physical Details</h3>
                 <div class="details-row">
                     <span>Height</span>
-                    <span>{{c.height}}</span>
+                    <span>{{selectedPerson.height}}</span>
                 </div>
                 <div class="details-row">
                     <span>Mass</span>
-                    <span>{{c.mass}}</span>
+                    <span>{{selectedPerson.mass}}</span>
                 </div>
                 <div class="details-row">
                     <span>Hair Color</span>
-                    <span>{{c.hair_color}}</span>
+                    <span>{{selectedPerson.hair_color}}</span>
                 </div>
                 <div class="details-row">
                     <span>Skin Color</span>
-                    <span>{{c.skin_color}}</span>
+                    <span>{{selectedPerson.skin_color}}</span>
                 </div>
                 <div class="details-row">
                     <span>Eye Color</span>
-                    <span>{{c.eye_color}}</span>
+                    <span>{{selectedPerson.eye_color}}</span>
                 </div>
             </div>
         </ng-container>
