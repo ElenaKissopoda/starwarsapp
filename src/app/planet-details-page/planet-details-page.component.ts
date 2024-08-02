@@ -53,7 +53,8 @@ export class PlanetDetailsPageComponent implements OnInit, OnDestroy {
               terrain: planet.result.properties.terrain,
               surface_water: planet.result.properties.surface_water,
               name: planet.result.properties.name,
-              description: planet.result.description
+              description: planet.result.description,
+              planetUrl: planet.result.properties.url
             };
             return _p;
           })

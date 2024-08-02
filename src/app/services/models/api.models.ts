@@ -26,4 +26,5 @@ export interface PlanetDetailApiModel {
     surface_water: string;
     name: string;
     description: string;
+    planetUrl: string;
 }

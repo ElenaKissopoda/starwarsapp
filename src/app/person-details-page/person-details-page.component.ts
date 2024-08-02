@@ -5,7 +5,7 @@ import { BehaviorSubject, filter, map, of, Subscription, switchMap } from 'rxjs'
 import { ApiService } from '../services/api.service';
 import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
 import { StateService } from '../services/state.service';
-import { PersonDetailApiModel } from '../services/models/api.models';
+import { PersonDetailApiModel, PlanetDetailApiModel } from '../services/models/api.models';
 
 @Component({
   selector: 'app-person-details-page',
@@ -67,15 +67,38 @@ export class PersonDetailsPageComponent implements OnInit, OnDestroy {
 
     sub = this.selectedPerson$.pipe(
       filter(details => !!details && !details.homeworldId),
-      switchMap(details => this.srvc.getPlanetDetails(details.homeworldUrl))
+      switchMap(details => {
+        if (this.stateSrvc.planetsDetails.find(x => details.homeworldUrl == x.planetUrl))
+          return of(this.stateSrvc.planetsDetails.find(x => details.homeworldUrl == x.planetUrl) as PlanetDetailApiModel);
+
+        return this.srvc.getPlanetDetails(details.homeworldUrl).pipe(
+          map(planet => {
+            return {
+              id: planet.result.uid,
+              diameter: planet.result.properties.diameter,
+              rotation_period: planet.result.properties.rotation_period,
+              orbital_period: planet.result.properties.orbital_period,
+              gravity: planet.result.properties.gravity,
+              population: planet.result.properties.population,
+              climate: planet.result.properties.climate,
+              terrain: planet.result.properties.terrain,
+              surface_water: planet.result.properties.surface_water,
+              name: planet.result.properties.name,
+              description: planet.result.description,
+              planetUrl: planet.result.properties.url
+            };
+          })
+        )
+      })
     ).subscribe(planet => {
       if (!planet) return;
 
       let selectedPerson = { ...this.selectedPersonSub.value };
-      selectedPerson.homeworldName = planet.result.properties.name;
-      selectedPerson.homeworldId = planet.result.uid;
+      selectedPerson.homeworldName = planet.name;
+      selectedPerson.homeworldId = planet.id;
       this.selectedPersonSub.next(selectedPerson);
       this.stateSrvc.person = selectedPerson;
+      this.stateSrvc.planet = planet;
     });
     this.subs.add(sub);
   }

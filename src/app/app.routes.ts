@@ -26,6 +26,9 @@ export const routes: Routes = [
     },
     {
         path: '', redirectTo: '/persons', pathMatch: 'full'
+    }, 
+    {
+        path: '**', redirectTo: '/persons', pathMatch: 'full'
     }
 ];
 
